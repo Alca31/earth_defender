@@ -13,8 +13,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Assets } from "./Assets";
-import { GameObject } from "./GameObject";
+import { Assets } from "./Assets.js";
+import { GameObject } from "./GameObject.js";
 var Star = /** @class */ (function (_super) {
     __extends(Star, _super);
     function Star() {

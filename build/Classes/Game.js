@@ -1,8 +1,6 @@
-import { Alien } from "./Alien.js";
 import { Player } from "./Player.js";
 import { Input } from "./Inputs.js";
 import { Star } from "./Star.js";
-import { Laser } from "./Laser.js";
 var Game = /** @class */ (function () {
     function Game() {
         // Public attributs
@@ -28,17 +26,19 @@ var Game = /** @class */ (function () {
         this.context.clearRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
         this.context.fillStyle = "#141414";
         this.context.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+        this.context.fillStyle = "#000000b7";
+        this.context.fillRect(this.CANVAS_WIDTH / 2, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
     };
     Game.prototype.start = function () {
         this.gameContext();
         this.player = new Player(this);
         this.player.callStart();
         this.instanciate(this.player);
-        for (var i = 0; i < this.nbAliens; i++) {
-            var alien = new Alien(this);
+        /*for (let i = 0; i < this.nbAliens; i++) {
+            const alien = new Alien(this);
             alien.callStart();
             this.instanciate(alien);
-        }
+        } */
         for (var i = 0; i < this.nbStar; i++) {
             var star = new Star(this);
             star.callStart();
@@ -57,29 +57,37 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.loop = function () {
         var _this = this;
-        var gameInterval = setInterval(function () {
+        this.gameInterval = setInterval(function () {
             console.log("Frame!");
             _this.gameContext();
             _this.gameObjects.forEach(function (gameObject) {
                 gameObject.callUpdate();
                 _this.draw(gameObject);
-                if (gameObject instanceof Alien) {
-                    if (gameObject.overlap(gameObject, _this.player)) {
-                        console.log("player lose");
-                        clearInterval(gameInterval);
-                        return;
+                _this.gameObjects.forEach(function (other) {
+                    if (gameObject.overlap(other) && gameObject !== other) {
+                        gameObject.callCollide(other);
                     }
-                    if (gameObject.overlap(_this.laser, gameObject)) {
-                        _this.destroy(gameObject);
-                    }
-                }
-                if (gameObject instanceof Laser) {
-                    if (gameObject.overlap(gameObject, _this.alien)) {
-                        _this.destroy(gameObject);
-                    }
-                }
+                });
+                // if (gameObject instanceof Alien) {
+                //     if (gameObject.overlap(gameObject, this.player)) {
+                //         console.log("player lose");
+                //         clearInterval(gameInterval);
+                //         return;
+                //     }
+                //     if (gameObject.overlap(gameObject, this.laser)) {
+                //         this.destroy(gameObject);
+                //     }
+                // }
+                // if (gameObject instanceof Laser) {
+                //     if (gameObject.overlap(gameObject, this.alien)) {
+                //         this.destroy(gameObject);
+                //     }
+                // }
             });
-        }, 10);
+        }, 1000);
+    };
+    Game.prototype.gameover = function () {
+        clearInterval(this.gameInterval);
     };
     return Game;
 }());

@@ -19,6 +19,7 @@ export class GameObject {
 
 
     public overlap(obj1: GameObject, obj2: GameObject=null):boolean {
+        if(obj2==null)obj2 = this;
         //math.abs sort la valeur absolue d'un nombre, ensuite on vérifie si la distance entre les deux objets 
         // est inférieure à la somme de leur largeur et hauteur respectives pour toucher les bords
         //si on veut faire une collision entre deux objets dont la position est centré 
@@ -54,5 +55,12 @@ export class GameObject {
         this.position = position;
     }
 
+
+    protected collide(other : GameObject) {
+        // logique de collision à implémenter dans les classes enfants
+    }
+    public callCollide(other : GameObject) {
+        this.collide(other);
+    }
 
 }

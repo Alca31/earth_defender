@@ -22,6 +22,7 @@ var Input = /** @class */ (function () {
                     break;
                 case " ":
                     Input.isShooting = true;
+                    console.log("release space", "input:", Input.isShooting);
                     break;
                 default:
                     break;
@@ -37,6 +38,7 @@ var Input = /** @class */ (function () {
                     break;
                 case " ":
                     Input.isShooting = false;
+                    console.log("push space");
                     break;
                 default:
                     break;

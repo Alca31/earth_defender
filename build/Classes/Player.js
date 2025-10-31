@@ -33,21 +33,29 @@ var Player = /** @class */ (function (_super) {
             y: this.getGame().CANVAS_HEIGHT - this.getImage().height
         });
     };
-    Player.prototype.update = function () {
+    Player.prototype.Adapt = function () {
         //repris sur javier
-        var rightBoundary = this.getGame().CANVAS_WIDTH - this.getImage().width;
         var movement = this.speed * Input.getAxisX();
-        var availableSpace = rightBoundary - this.getPosition().x;
-        var clampedMovement = Math.max(0, Math.min(movement, availableSpace)); // entre 0 (à gauche) et l'espace dispo à droite
-        this.setPosition({
-            x: this.getPosition().x + clampedMovement,
-            y: this.getPosition().y
-        });
+        // entre 0 (à gauche) et l'espace dispo à droit
+        if (this.getPosition().x >= this.getGame().CANVAS_WIDTH - this.getImage().width) {
+            return this.getGame().CANVAS_WIDTH - this.getImage().width - 5;
+        }
+        if (this.getPosition().x <= 0) {
+            return this.getPosition().x + this.getImage().width + 5;
+        }
+        return this.getPosition().x + movement;
+    };
+    Player.prototype.update = function () {
+        console.log("player isShooting:", Input.getIsShooting());
         if (Input.getIsShooting() &&
             ((Date.now() - this.lastShootTime) >= this.shootInterval_ms)) {
             this.getGame().instanciate(new Laser(this.getGame()));
             this.lastShootTime = Date.now();
         }
+        this.setPosition({
+            x: this.Adapt(),
+            y: this.getPosition().y
+        });
     };
     return Player;
 }(GameObject));

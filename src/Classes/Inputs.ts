@@ -28,6 +28,7 @@ export class Input {
                     break;
                 case " ":
                     Input.isShooting = true;
+                    console.log("release space", "input:",Input.isShooting);
                     break;
                 default:
                     break;
@@ -42,7 +43,8 @@ export class Input {
                     Input.axisX = 0;
                     break;
                 case " ":
-                    Input.isShooting = false;  
+                    Input.isShooting = false;
+                    console.log("push space");
                     break;
                 default:
                     break;

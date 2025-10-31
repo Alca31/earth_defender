@@ -36,6 +36,8 @@ export class Game {
         this.context.clearRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
         this.context.fillStyle = "#141414";
         this.context.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
+        this.context.fillStyle = "#000000b7";
+        this.context.fillRect(this.CANVAS_WIDTH/2, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
     }
 
     public start(): void {
@@ -43,11 +45,11 @@ export class Game {
         this.player = new Player(this);
         this.player.callStart();
         this.instanciate(this.player);
-        for (let i = 0; i < this.nbAliens; i++) {
+        /*for (let i = 0; i < this.nbAliens; i++) {
             const alien = new Alien(this);
             alien.callStart();
             this.instanciate(alien);
-        }
+        } */
         for (let i = 0; i < this.nbStar; i++) {
             const star = new Star(this);
             star.callStart();
@@ -75,28 +77,39 @@ export class Game {
     }
 
     private loop() {
-        const gameInterval = setInterval(() => {
+        this.gameInterval = setInterval(() => {
             console.log("Frame!");
             this.gameContext();
             this.gameObjects.forEach(gameObject => {
                 gameObject.callUpdate();
                 this.draw(gameObject);
-                if (gameObject instanceof Alien) {
-                    if (gameObject.overlap(gameObject, this.player)) {
-                        console.log("player lose");
-                        clearInterval(gameInterval);
-                        return;
+                this.gameObjects.forEach(other => {
+                    if(gameObject.overlap(other) && gameObject !== other){
+                        gameObject.callCollide(other);
                     }
-                    if (gameObject.overlap(this.laser, gameObject)) {
-                        this.destroy(gameObject);
-                    }
-                }
-                if (gameObject instanceof Laser) {
-                    if (gameObject.overlap(gameObject, this.alien)) {
-                        this.destroy(gameObject);
-                    }
-                }
+                    
+                });
+                // if (gameObject instanceof Alien) {
+                //     if (gameObject.overlap(gameObject, this.player)) {
+                //         console.log("player lose");
+                //         clearInterval(gameInterval);
+                //         return;
+                //     }
+                //     if (gameObject.overlap(gameObject, this.laser)) {
+                //         this.destroy(gameObject);
+                //     }
+                // }
+                // if (gameObject instanceof Laser) {
+                //     if (gameObject.overlap(gameObject, this.alien)) {
+                //         this.destroy(gameObject);
+                //     }
+                // }
             })
-        }, 10);
+        }, 1000);
+    }
+
+    private gameInterval: number ;
+    public gameover(){
+        clearInterval(this.gameInterval);
     }
 }

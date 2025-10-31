@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import { Assets } from "./Assets.js";
 import { GameObject } from "./GameObject.js";
+import { Player } from "./Player.js";
 var Alien = /** @class */ (function (_super) {
     __extends(Alien, _super);
     function Alien() {
@@ -23,8 +24,8 @@ var Alien = /** @class */ (function (_super) {
         return _this;
     }
     Alien.prototype.posRandX = function () {
-        var rand = Math.floor(Math.random() * (this.getGame().CANVAS_WIDTH) * this.speed);
-        if (rand + this.getImage().width > this.getGame().CANVAS_WIDTH) {
+        var rand = Math.floor(Math.random() * (this.getGame().CANVAS_WIDTH / 2) * this.speed);
+        if (rand + this.getImage().width > this.getGame().CANVAS_WIDTH / 2) {
             rand = rand - this.getImage().width;
         }
         if (rand - this.getImage().width < 0) {
@@ -48,6 +49,13 @@ var Alien = /** @class */ (function (_super) {
             x: this.getPosition().x,
             y: this.getPosition().y + this.speed
         });
+    };
+    Alien.prototype.collide = function (other) {
+        // logique de collision à implémenter dans les classes enfants
+        if (other instanceof Player) {
+            console.log("player lose");
+            this.getGame().gameover();
+        }
     };
     return Alien;
 }(GameObject));

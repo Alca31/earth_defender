@@ -1,5 +1,5 @@
-import { Assets } from "./Assets";
-import { GameObject } from "./GameObject";
+import { Assets } from "./Assets.js";
+import { GameObject } from "./GameObject.js";
 
 export class Star extends GameObject {
     private speed: number = 10;

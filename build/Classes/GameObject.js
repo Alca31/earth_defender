@@ -11,6 +11,8 @@ var GameObject = /** @class */ (function () {
     }
     GameObject.prototype.overlap = function (obj1, obj2) {
         if (obj2 === void 0) { obj2 = null; }
+        if (obj2 == null)
+            obj2 = this;
         //math.abs sort la valeur absolue d'un nombre, ensuite on vérifie si la distance entre les deux objets 
         // est inférieure à la somme de leur largeur et hauteur respectives pour toucher les bords
         //si on veut faire une collision entre deux objets dont la position est centré 
@@ -42,6 +44,12 @@ var GameObject = /** @class */ (function () {
     };
     GameObject.prototype.setPosition = function (position) {
         this.position = position;
+    };
+    GameObject.prototype.collide = function (other) {
+        // logique de collision à implémenter dans les classes enfants
+    };
+    GameObject.prototype.callCollide = function (other) {
+        this.collide(other);
     };
     return GameObject;
 }());
